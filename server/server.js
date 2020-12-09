@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 require('./config/config');
 
@@ -9,35 +10,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-app.get('/usuario', function(req, res) {
-    res.send('get Usuario')
-});
+// Usamos las rutas de Usuario
+app.use(require('./routes/usuario'));
 
-app.post('/usuario', function(req, res) {
-    // res.send('post Usuario')
-    let body = req.body;
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.json({
-            persona: body
-        });
-    }
-});
+// Conectando a la BD 'cafe' en MongoDB
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true }, (err, resp) => {
+    if (err) throw err;
 
-app.put('/usuario/:id', function(req, res) {
-    let id = req.params.id;
-    // res.send('put Usuario')
-    res.json({
-        id
-    })
-});
-
-app.delete('/usuario', function(req, res) {
-    res.send('delete Usuario')
+    console.log('BD ONLINE!!');
 });
 
 app.listen(process.env.PORT, () => {
