@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-// Usamos las rutas de Usuario
-app.use(require('./routes/usuario'));
+// Configuración Global de Rutas
+app.use(require('./routes/index'));
 
 // Conectando a la BD 'cafe' en MongoDB
 mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true }, (err, resp) => {
